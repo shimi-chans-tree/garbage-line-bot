@@ -49,7 +49,7 @@ func sendMessage() {
 
 func SendMessage() {
 	c := cron.New()
-	err := c.AddFunc("@every 1m", func() { sendMessage() })
+	err := c.AddFunc("0 0 17,19 * *", func() { sendMessage() })
 
 	if err != nil {
 		return
