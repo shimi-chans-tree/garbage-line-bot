@@ -41,8 +41,13 @@ func garbageSeeds(db *gorm.DB) error {
 		days := strings.Split(t, "\n")
 
 		for j := 1; j < len(days); j++ {
-			month, _ := strconv.Atoi(strings.TrimSpace(days[0][7:8]))
-			fmt.Println(month)
+			var month int
+			if i > 5 && i < 9 {
+				month, _ = strconv.Atoi(strings.TrimSpace(days[0][7:9]))
+				fmt.Println(month)
+			} else {
+				month, _ = strconv.Atoi(strings.TrimSpace(days[0][7:8]))
+			}
 			dayArray := strings.Split(days[j], "日")
 			day, _ := strconv.Atoi(dayArray[0])
 			dayOfWeek := strings.Replace(dayArray[1], "曜", "", -1)

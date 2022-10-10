@@ -33,7 +33,7 @@ func sendMessage() {
 	}
 
 	var ms string
-	
+
 	if garbageDays.Garbage != "" {
 		ms = "☆" + garbageDays.Garbage
 	} else {
@@ -49,6 +49,11 @@ func sendMessage() {
 
 func SendMessage() {
 	c := cron.New()
-	c.AddFunc("@every 1m", func() { sendMessage() })
+	err := c.AddFunc("0 0 17,19 * *", func() { sendMessage() })
+
+	if err != nil {
+		return
+	}
+
 	c.Start()
 }

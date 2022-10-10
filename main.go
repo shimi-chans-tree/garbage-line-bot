@@ -11,6 +11,8 @@ import (
 )
 
 func main() {
+	// バッチ処理
+	batch.SendMessage()
 
 	// DB初期化
 	db := db.Init()
@@ -29,8 +31,9 @@ func main() {
 	garbageRouter := router.NewGarbageRouter(garbageDayController)
 	mainRouter := router.NewMainRouter(appRouter, garbageRouter)
 	// WebServer
-	mainRouter.StartWebServer()
 
-	// バッチ処理
-	batch.SendMessage()
+	err := mainRouter.StartWebServer()
+	if err != nil {
+		return
+	}
 }
