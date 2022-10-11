@@ -1,0 +1,21 @@
+name: deploy
+on: [pull_request]
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install SSH key
+        uses: shimataro/ssh-key-action@v2 
+        with:
+          key: ${{ secrets.PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      - name: copy
+        run: rsync -acvz --exclude '.git'  --exclude '.github' -e "ssh -p ${{secrets.PORT}}" ./ ${{secrets.USER}}@${{secrets.IP_ADDRESS}}:/var/www
+        
+      - name: build
+        run:  ssh -p ${{secrets.PORT}} ${{secrets.USER}}@${{secrets.IP_ADDRESS}} "cd /var/www; docker-compose build; docker-compose down; docker-compose -f docker-compose-prod.yml up -d"
+            
